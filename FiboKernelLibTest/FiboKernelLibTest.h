@@ -1,0 +1,5 @@
+#pragma once
+
+EXTERN_C_START
+NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath);
+EXTERN_C_END
