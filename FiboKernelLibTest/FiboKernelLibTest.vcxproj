@@ -169,6 +169,7 @@
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\FiboKernelLib\algorithm.h" />
     <ClInclude Include="..\FiboKernelLib\define.h" />
     <ClInclude Include="..\FiboKernelLib\lock_guard.h" />
     <ClInclude Include="..\FiboKernelLib\fast_mutex.h" />

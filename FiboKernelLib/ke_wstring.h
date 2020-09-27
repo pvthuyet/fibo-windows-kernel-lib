@@ -8,7 +8,7 @@ namespace fibo::kernel
 	{
 	public:
 		explicit KeWstring(const wchar_t* str, POOL_TYPE pool = PagedPool, ULONG tag = 0);
-		KeWstring(const wchar_t* str, ULONG count, POOL_TYPE pool = PagedPool, ULONG tag = 0);
+		KeWstring(const wchar_t* str, size_t count, POOL_TYPE pool = PagedPool, ULONG tag = 0);
 		explicit KeWstring(PCUNICODE_STRING str, POOL_TYPE pool = PagedPool, ULONG tag = 0);
 		KeWstring(const KeWstring& other);
 		KeWstring(KeWstring&& other);

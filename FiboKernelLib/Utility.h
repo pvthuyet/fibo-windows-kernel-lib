@@ -3,8 +3,5 @@
 
 namespace fibo::kernel::Utility
 {
-	_NODISCARD inline size_t minUpper(size_t x, size_t factor = 8) noexcept
-	{
-		return (((x + factor) / factor) * factor);
-	}
+	_NODISCARD size_t minUpper(size_t x, size_t factor = 8u) noexcept;
 }

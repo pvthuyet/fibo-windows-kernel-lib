@@ -11,7 +11,7 @@ namespace fibo::kernel
 	{
 	}
 
-	KeWstring::KeWstring(const wchar_t* str, ULONG count, POOL_TYPE pool, ULONG tag) :
+	KeWstring::KeWstring(const wchar_t* str, size_t count, POOL_TYPE pool, ULONG tag) :
 		mPoolType{ pool },
 		mTag{ tag },
 		mLen{ 0 },

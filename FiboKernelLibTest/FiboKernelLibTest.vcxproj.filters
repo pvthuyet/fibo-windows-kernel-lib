@@ -66,5 +66,8 @@
     <ClInclude Include="..\FiboKernelLib\Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\FiboKernelLib\algorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
