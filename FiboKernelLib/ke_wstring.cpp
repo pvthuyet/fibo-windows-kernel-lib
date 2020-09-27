@@ -40,7 +40,7 @@ namespace fibo::kernel
 		mLen = str->Length / sizeof(wchar_t);
 		if (mLen > 0)
 		{
-			mCapacity = mLen + 1;
+			mCapacity = Utility::minUpper(mLen);
 			mStr = allocate(mCapacity, str->Buffer, mLen);
 			if (!mStr)
 			{
@@ -175,7 +175,7 @@ namespace fibo::kernel
 		return this->mLen;
 	}
 
-	KeWstring KeWstring::toLower() const
+	_NODISCARD KeWstring KeWstring::toLower() const
 	{
 		KeWstring tmp(*this);
 		_wcslwr_s(tmp.mStr, tmp.mLen);
@@ -198,30 +198,26 @@ namespace fibo::kernel
 		return *this;
 	}
 
-	KeWstring& KeWstring::append(PCWSTR str, size_t len)
+	KeWstring& KeWstring::append(PCWSTR str, size_t count)
 	{
-		if (!str)
+		count = (0 == count) ? wcsnlen_s(str, MAX_KE_WSTRING_LENGTH) : count;
+		if (count > 0)
 		{
-			return *this;
-		}
-
-		len = (0 == len) ? wcslen(str) : len;
-		if (len > 0)
-		{
+			NT_ASSERT(nullptr != str);
 			auto newAlloc = false;
 			auto newBuffer = mStr;
-			auto newLen = mLen + len;
+			auto newLen = mLen + count;
 			auto newCapacity = mCapacity;
 
 			if (newLen + 1 > mCapacity)
 			{
-				newCapacity = newLen + 1;
+				newCapacity = Utility::minUpper(newLen);
 				newBuffer = allocate(newCapacity, mStr, mLen);
 				newAlloc = true;
 			}
 
 			// copy 
-			wcsncat_s(newBuffer, newCapacity, str, len);
+			wcsncat_s(newBuffer, newCapacity, str, count);
 			if (newAlloc)
 			{
 				release();
@@ -247,7 +243,10 @@ namespace fibo::kernel
 
 	UNICODE_STRING* KeWstring::getUnicodeString(PUNICODE_STRING pUnicodeString) const
 	{
-		RtlInitUnicodeString(pUnicodeString, mStr);
+		if (mStr) {
+			RtlInitUnicodeString(pUnicodeString, mStr);
+		}
+
 		return pUnicodeString;
 	}
 
@@ -264,13 +263,15 @@ namespace fibo::kernel
 	_NODISCARD wchar_t* KeWstring::allocate(size_t newCount, const wchar_t* src, size_t count) const
 	{
 		NT_ASSERT(newCount > count);
-		auto newStr = static_cast<wchar_t*>(ExAllocatePoolWithTag(mPoolType, newCount * sizeof(wchar_t), mTag));
+		auto numOfBytes = newCount * sizeof(wchar_t);
+		auto newStr = static_cast<wchar_t*>(ExAllocatePoolWithTag(mPoolType, numOfBytes, mTag));
 		if (!newStr)
 		{
 			KdPrint(("Failed to allocate KeWstring of length %lu chars\n", newCount));
 			return nullptr;
 		}
 
+		RtlZeroMemory(newStr, numOfBytes);
 		if (count > 0)
 		{
 			NT_ASSERT(nullptr != src);

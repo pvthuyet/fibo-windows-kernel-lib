@@ -7,7 +7,7 @@ namespace fibo::kernel
 	class KeWstring final
 	{
 	public:
-		explicit KeWstring(const wchar_t* str = nullptr, POOL_TYPE pool = PagedPool, ULONG tag = 0);
+		explicit KeWstring(const wchar_t* str, POOL_TYPE pool = PagedPool, ULONG tag = 0);
 		KeWstring(const wchar_t* str, ULONG count, POOL_TYPE pool = PagedPool, ULONG tag = 0);
 		explicit KeWstring(PCUNICODE_STRING str, POOL_TYPE pool = PagedPool, ULONG tag = 0);
 		KeWstring(const KeWstring& other);
@@ -28,11 +28,11 @@ namespace fibo::kernel
 		const wchar_t* get() const;
 		size_t length() const;
 
-		KeWstring toLower() const;
+		_NODISCARD KeWstring toLower() const;
 		KeWstring& toLower();
 
 		KeWstring& truncate(ULONG length);
-		KeWstring& append(PCWSTR str, size_t len = 0);
+		KeWstring& append(PCWSTR str, size_t count = 0);
 
 		const wchar_t getAt(size_t index) const;
 		wchar_t& getAt(size_t index);
