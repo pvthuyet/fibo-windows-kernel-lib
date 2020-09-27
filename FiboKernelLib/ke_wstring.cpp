@@ -229,7 +229,7 @@ namespace fibo::kernel
 		return *this;
 	}
 
-	const wchar_t KeWstring::getAt(size_t index) const
+	_NODISCARD const wchar_t KeWstring::getAt(size_t index) const
 	{
 		NT_ASSERT(mLen > index);
 		return mStr[index];

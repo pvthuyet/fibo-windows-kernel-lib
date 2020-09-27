@@ -35,7 +35,7 @@
       <Filter>kernel lib</Filter>
     </ClCompile>
     <ClCompile Include="..\FiboKernelLib\Utility.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>kernel lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,10 +64,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\FiboKernelLib\Utility.h">
-      <Filter>Header Files</Filter>
+      <Filter>kernel lib</Filter>
     </ClInclude>
     <ClInclude Include="..\FiboKernelLib\algorithm.h">
-      <Filter>Header Files</Filter>
+      <Filter>kernel lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

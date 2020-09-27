@@ -34,7 +34,7 @@ namespace fibo::kernel
 		KeWstring& truncate(ULONG length);
 		KeWstring& append(PCWSTR str, size_t count = 0);
 
-		const wchar_t getAt(size_t index) const;
+		_NODISCARD const wchar_t getAt(size_t index) const;
 		wchar_t& getAt(size_t index);
 		UNICODE_STRING* getUnicodeString(PUNICODE_STRING) const;
 
