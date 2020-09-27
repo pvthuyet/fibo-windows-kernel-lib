@@ -265,9 +265,7 @@ namespace fibo::kernel
 		NT_ASSERT(newCount > count);
 		auto numOfBytes = newCount * sizeof(wchar_t);
 		auto newStr = static_cast<wchar_t*>(ExAllocatePoolWithTag(mPoolType, numOfBytes, mTag));
-		if (!newStr)
-		{
-			KdPrint(("Failed to allocate KeWstring of length %lu chars\n", newCount));
+		if (!newStr) {
 			return nullptr;
 		}
 
