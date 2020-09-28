@@ -188,7 +188,7 @@ namespace fibo::kernel
 		return *this;
 	}
 
-	KeWstring& KeWstring::truncate(ULONG length)
+	KeWstring& KeWstring::truncate(size_t length)
 	{
 		if (mLen > length)
 		{

@@ -31,7 +31,7 @@ namespace fibo::kernel
 		KE_NODISCARD KeWstring toLower() const;
 		KeWstring& toLower();
 
-		KeWstring& truncate(ULONG length);
+		KeWstring& truncate(size_t length);
 		KeWstring& append(PCWSTR str, size_t count = 0);
 
 		KE_NODISCARD const wchar_t getAt(size_t index) const;
