@@ -41,7 +41,7 @@ namespace fibo::kernel
 		void release();
 
 	private:
-		KE_NODISCARD wchar_t* allocate(size_t newBufferSize, const wchar_t* src = nullptr, size_t srcLen = 0) const;
+		KE_NODISCARD wchar_t* allocate(size_t newCount, const wchar_t* src = nullptr, size_t count = 0) const;
 
 	private:
 		wchar_t* mStr{ nullptr };
