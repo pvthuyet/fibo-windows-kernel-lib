@@ -162,20 +162,21 @@
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\FiboKernelLib\fast_mutex.cpp" />
+    <ClCompile Include="..\FiboKernelLib\ke_fast_mutex.cpp" />
     <ClCompile Include="..\FiboKernelLib\ke_wstring.cpp" />
-    <ClCompile Include="..\FiboKernelLib\Utility.cpp" />
+    <ClCompile Include="..\FiboKernelLib\ke_utility.cpp" />
     <ClCompile Include="FiboKernelLibTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\FiboKernelLib\algorithm.h" />
-    <ClInclude Include="..\FiboKernelLib\define.h" />
-    <ClInclude Include="..\FiboKernelLib\lock_guard.h" />
-    <ClInclude Include="..\FiboKernelLib\fast_mutex.h" />
+    <ClInclude Include="..\FiboKernelLib\ke_algorithm.h" />
+    <ClInclude Include="..\FiboKernelLib\ke_constant.h" />
+    <ClInclude Include="..\FiboKernelLib\ke_define.h" />
+    <ClInclude Include="..\FiboKernelLib\ke_lock_guard.h" />
+    <ClInclude Include="..\FiboKernelLib\ke_fast_mutex.h" />
     <ClInclude Include="..\FiboKernelLib\ke_logger.h" />
     <ClInclude Include="..\FiboKernelLib\ke_wstring.h" />
-    <ClInclude Include="..\FiboKernelLib\Utility.h" />
+    <ClInclude Include="..\FiboKernelLib\ke_utility.h" />
     <ClInclude Include="constant.h" />
     <ClInclude Include="FiboKernelLibTest.h" />
     <ClInclude Include="stdafx.h" />

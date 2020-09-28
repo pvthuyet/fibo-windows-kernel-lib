@@ -28,13 +28,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\FiboKernelLib\fast_mutex.cpp">
-      <Filter>kernel lib</Filter>
-    </ClCompile>
     <ClCompile Include="..\FiboKernelLib\ke_wstring.cpp">
       <Filter>kernel lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\FiboKernelLib\Utility.cpp">
+    <ClCompile Include="..\FiboKernelLib\ke_fast_mutex.cpp">
+      <Filter>kernel lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\FiboKernelLib\ke_utility.cpp">
       <Filter>kernel lib</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,25 +48,28 @@
     <ClInclude Include="..\FiboKernelLib\ke_logger.h">
       <Filter>kernel lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\FiboKernelLib\fast_mutex.h">
-      <Filter>kernel lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\FiboKernelLib\lock_guard.h">
-      <Filter>kernel lib</Filter>
-    </ClInclude>
     <ClInclude Include="constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\FiboKernelLib\ke_wstring.h">
       <Filter>kernel lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\FiboKernelLib\define.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\FiboKernelLib\Utility.h">
+    <ClInclude Include="..\FiboKernelLib\ke_define.h">
       <Filter>kernel lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\FiboKernelLib\algorithm.h">
+    <ClInclude Include="..\FiboKernelLib\ke_algorithm.h">
+      <Filter>kernel lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FiboKernelLib\ke_fast_mutex.h">
+      <Filter>kernel lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FiboKernelLib\ke_lock_guard.h">
+      <Filter>kernel lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FiboKernelLib\ke_utility.h">
+      <Filter>kernel lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FiboKernelLib\ke_constant.h">
       <Filter>kernel lib</Filter>
     </ClInclude>
   </ItemGroup>

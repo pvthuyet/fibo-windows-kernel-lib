@@ -1,5 +1,5 @@
 #pragma once
-#include "define.h"
+#include "ke_define.h"
 
 namespace fibo::kernel::Utility
 {

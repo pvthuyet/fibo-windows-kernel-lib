@@ -1,5 +1,5 @@
 #include <ntddk.h>
-#include "fast_mutex.h"
+#include "ke_fast_mutex.h"
 
 namespace fibo::kernel
 {
