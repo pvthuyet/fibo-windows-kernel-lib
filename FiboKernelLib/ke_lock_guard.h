@@ -2,10 +2,12 @@
 
 namespace fibo::kernel
 {
-	template <typename T>
+	template <class MutexType>
 	struct LockGuard
 	{
-		LockGuard(T& mux) : mMux(mux)
+		explicit LockGuard(const LockGuard&) = delete;
+
+		LockGuard(MutexType& mux) : mMux(mux)
 		{
 			mMux.lock();
 		}
@@ -16,6 +18,6 @@ namespace fibo::kernel
 		}
 
 	private:
-		T& mMux;
+		MutexType& mMux;
 	};
 }
