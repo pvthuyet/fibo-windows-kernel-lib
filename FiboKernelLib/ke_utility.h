@@ -3,5 +3,5 @@
 
 namespace fibo::kernel::Utility
 {
-	_NODISCARD size_t minUpper(size_t x, size_t factor = 8u) noexcept;
+	KE_NODISCARD size_t minUpper(size_t x, size_t factor = 8) noexcept;
 }

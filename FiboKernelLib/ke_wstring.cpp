@@ -175,7 +175,7 @@ namespace fibo::kernel
 		return this->mLen;
 	}
 
-	_NODISCARD KeWstring KeWstring::toLower() const
+	KE_NODISCARD KeWstring KeWstring::toLower() const
 	{
 		KeWstring tmp(*this);
 		_wcslwr_s(tmp.mStr, tmp.mLen);
@@ -229,7 +229,7 @@ namespace fibo::kernel
 		return *this;
 	}
 
-	_NODISCARD const wchar_t KeWstring::getAt(size_t index) const
+	KE_NODISCARD const wchar_t KeWstring::getAt(size_t index) const
 	{
 		NT_ASSERT(mLen > index);
 		return mStr[index];
@@ -260,7 +260,7 @@ namespace fibo::kernel
 		}
 	}
 
-	_NODISCARD wchar_t* KeWstring::allocate(size_t newCount, const wchar_t* src, size_t count) const
+	KE_NODISCARD wchar_t* KeWstring::allocate(size_t newCount, const wchar_t* src, size_t count) const
 	{
 		NT_ASSERT(newCount > count);
 		auto numOfBytes = newCount * sizeof(wchar_t);

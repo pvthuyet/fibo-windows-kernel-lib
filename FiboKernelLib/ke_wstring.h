@@ -28,20 +28,20 @@ namespace fibo::kernel
 		const wchar_t* get() const;
 		size_t length() const;
 
-		_NODISCARD KeWstring toLower() const;
+		KE_NODISCARD KeWstring toLower() const;
 		KeWstring& toLower();
 
 		KeWstring& truncate(ULONG length);
 		KeWstring& append(PCWSTR str, size_t count = 0);
 
-		_NODISCARD const wchar_t getAt(size_t index) const;
+		KE_NODISCARD const wchar_t getAt(size_t index) const;
 		wchar_t& getAt(size_t index);
 		UNICODE_STRING* getUnicodeString(PUNICODE_STRING) const;
 
 		void release();
 
 	private:
-		_NODISCARD wchar_t* allocate(size_t newBufferSize, const wchar_t* src = nullptr, size_t srcLen = 0) const;
+		KE_NODISCARD wchar_t* allocate(size_t newBufferSize, const wchar_t* src = nullptr, size_t srcLen = 0) const;
 
 	private:
 		wchar_t* mStr{ nullptr };

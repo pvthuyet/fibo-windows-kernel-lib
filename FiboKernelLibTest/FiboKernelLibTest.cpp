@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "FiboKernelLibTest.h"
 #include "constant.h"
-#include "ke_fast_mutex.h"
-#include "ke_lock_guard.h"
+#include "ke_mutex.h"
 #include "ke_logger.h"
 #include "ke_wstring.h"
 

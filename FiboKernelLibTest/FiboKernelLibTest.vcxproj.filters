@@ -31,10 +31,10 @@
     <ClCompile Include="..\FiboKernelLib\ke_wstring.cpp">
       <Filter>kernel lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\FiboKernelLib\ke_fast_mutex.cpp">
+    <ClCompile Include="..\FiboKernelLib\ke_utility.cpp">
       <Filter>kernel lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\FiboKernelLib\ke_utility.cpp">
+    <ClCompile Include="..\FiboKernelLib\ke_mutex.cpp">
       <Filter>kernel lib</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,16 +60,13 @@
     <ClInclude Include="..\FiboKernelLib\ke_algorithm.h">
       <Filter>kernel lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\FiboKernelLib\ke_fast_mutex.h">
-      <Filter>kernel lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\FiboKernelLib\ke_lock_guard.h">
-      <Filter>kernel lib</Filter>
-    </ClInclude>
     <ClInclude Include="..\FiboKernelLib\ke_utility.h">
       <Filter>kernel lib</Filter>
     </ClInclude>
     <ClInclude Include="..\FiboKernelLib\ke_constant.h">
+      <Filter>kernel lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FiboKernelLib\ke_mutex.h">
       <Filter>kernel lib</Filter>
     </ClInclude>
   </ItemGroup>
