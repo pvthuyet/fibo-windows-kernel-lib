@@ -4,7 +4,7 @@
 
 namespace fibo::kernel::Utility
 {
-	KE_NODISCARD size_t minUpper(size_t x, size_t factor) noexcept
+	KE_NODISCARD size_t minUpper(size_t x, size_t factor) KE_NOEXCEPT
 	{
 		factor = Algorithm::max(factor, kMinMemoryBlock);
 		return (((x + factor) / factor) * factor);

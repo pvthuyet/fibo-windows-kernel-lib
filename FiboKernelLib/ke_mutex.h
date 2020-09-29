@@ -50,7 +50,7 @@ namespace fibo::kernel
             _MyMutex.lock();
         }
 
-        ~LockGuard() noexcept 
+        ~LockGuard() 
         {
             _MyMutex.unlock();
         }

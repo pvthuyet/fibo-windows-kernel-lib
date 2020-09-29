@@ -2,5 +2,5 @@
 
 namespace fibo::kernel
 {
-	constexpr size_t kMinMemoryBlock = 4; // in bytes
+	constexpr size_t kMinMemoryBlock = 8; // in bytes
 }
