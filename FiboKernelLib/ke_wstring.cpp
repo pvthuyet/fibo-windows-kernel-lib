@@ -1,11 +1,10 @@
 #include <ntddk.h>
 #include "ke_wstring.h"
 #include "ke_utility.h"
+#include "ke_strutils.h"
 
 namespace fibo::kernel
 {
-	constexpr size_t MAX_KE_WSTRING_LENGTH = MAX_UCSCHAR;
-
 	KeWstring::KeWstring(const wchar_t* str, POOL_TYPE pool, ULONG tag) :
 		KeWstring(str, 0, pool, tag)
 	{
@@ -18,10 +17,10 @@ namespace fibo::kernel
 		mCapacity{ 0 },
 		mStr{ nullptr }
 	{
-		mLen = (0 == count) ? wcsnlen_s(str, MAX_KE_WSTRING_LENGTH) : count;
+		mLen = (0 == count) ? StrUtils::length(str) : count;
 		if (mLen > 0)
 		{
-			mCapacity = Utility::minUpper(mLen);
+			mCapacity = Utility::aligned((mLen + 1) * sizeof(wchar_t));
 			mStr = allocate(mCapacity, str, mLen);
 			if (!mStr)
 			{
@@ -40,7 +39,7 @@ namespace fibo::kernel
 		mLen = str->Length / sizeof(wchar_t);
 		if (mLen > 0)
 		{
-			mCapacity = Utility::minUpper(mLen);
+			mCapacity = Utility::aligned((mLen + 1) * sizeof(wchar_t));
 			mStr = allocate(mCapacity, str->Buffer, mLen);
 			if (!mStr)
 			{
@@ -145,7 +144,7 @@ namespace fibo::kernel
 				return true;
 			}
 
-			return 0 == wcsncmp(this->mStr, other.mStr, this->mLen);
+			return StrUtils::equal(this->mStr, other.mStr, this->mLen);
 		}
 		return true;
 	}
@@ -178,13 +177,13 @@ namespace fibo::kernel
 	KE_NODISCARD KeWstring KeWstring::toLower() const
 	{
 		KeWstring tmp(*this);
-		_wcslwr_s(tmp.mStr, tmp.mLen);
+		StrUtils::toLower(tmp.mStr, tmp.mLen + 1);
 		return tmp;
 	}
 
 	KeWstring& KeWstring::toLower()
 	{
-		_wcslwr_s(mStr, mLen);
+		StrUtils::toLower(mStr, mLen + 1);
 		return *this;
 	}
 
@@ -200,10 +199,9 @@ namespace fibo::kernel
 
 	KeWstring& KeWstring::append(PCWSTR str, size_t count)
 	{
-		count = (0 == count) ? wcsnlen_s(str, MAX_KE_WSTRING_LENGTH) : count;
-		if (count > 0)
+		count = (0 == count) ? StrUtils::length(str) : count;
+		if (str && count > 0)
 		{
-			NT_ASSERT(nullptr != str);
 			auto newAlloc = false;
 			auto newBuffer = mStr;
 			auto newLen = mLen + count;
@@ -211,13 +209,13 @@ namespace fibo::kernel
 
 			if (newLen + 1 > mCapacity)
 			{
-				newCapacity = Utility::minUpper(newLen);
+				newCapacity = Utility::aligned((newLen + 1) * sizeof(wchar_t));
 				newBuffer = allocate(newCapacity, mStr, mLen);
 				newAlloc = true;
 			}
 
 			// copy 
-			wcsncat_s(newBuffer, newCapacity, str, count);
+			StrUtils::ncat(newBuffer, newCapacity, str, count * sizeof(wchar_t));
 			if (newAlloc)
 			{
 				release();
@@ -250,6 +248,16 @@ namespace fibo::kernel
 		return pUnicodeString;
 	}
 
+	size_t KeWstring::find(const wchar_t* s, size_t pos = 0) const
+	{
+		if (!s || pos >= mLen) {
+			return fibo::kernel::npos;
+		}
+
+
+
+	}
+
 	void KeWstring::release()
 	{
 		if (mStr)
@@ -260,20 +268,20 @@ namespace fibo::kernel
 		}
 	}
 
-	KE_NODISCARD wchar_t* KeWstring::allocate(size_t newCount, const wchar_t* src, size_t count) const
+	KE_NODISCARD wchar_t* KeWstring::allocate(size_t numOfBytes, const wchar_t* src, size_t count) const
 	{
-		NT_ASSERT(newCount > count);
-		auto numOfBytes = newCount * sizeof(wchar_t);
 		auto newStr = static_cast<wchar_t*>(ExAllocatePoolWithTag(mPoolType, numOfBytes, mTag));
 		if (!newStr) {
 			return nullptr;
 		}
 
 		RtlZeroMemory(newStr, numOfBytes);
-		if (count > 0)
+		if (src)
 		{
-			NT_ASSERT(nullptr != src);
-			wcsncpy_s(newStr, newCount, src, count);
+			auto bytesToCopy = (0 == count) ? StrUtils::lengthInbytes(src) : (count * sizeof(wchar_t));
+			if (bytesToCopy > 0) {
+				StrUtils::ncopy(newStr, numOfBytes, src, bytesToCopy);
+			}
 		}
 		return newStr;
 	}

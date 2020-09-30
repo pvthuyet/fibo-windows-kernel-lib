@@ -38,15 +38,16 @@ namespace fibo::kernel
 		wchar_t& getAt(size_t index);
 		UNICODE_STRING* getUnicodeString(PUNICODE_STRING) const;
 
+		size_t find(const wchar_t* s, size_t pos = 0) const;
+
+	private:
+		KE_NODISCARD wchar_t* allocate(size_t numOfBytes, const wchar_t* src = nullptr, size_t count = 0) const;
 		void release();
 
 	private:
-		KE_NODISCARD wchar_t* allocate(size_t newCount, const wchar_t* src = nullptr, size_t count = 0) const;
-
-	private:
 		wchar_t* mStr{ nullptr };
-		size_t mLen{ 0 };
-		size_t mCapacity{ 0 };
+		size_t mLen{ 0 };		// Number of element of mStr. Not include null-terminated
+		size_t mCapacity{ 0 };	// size of mStr in bytes
 		POOL_TYPE mPoolType{ PagedPool };
 		ULONG mTag{ 0 };
 	};

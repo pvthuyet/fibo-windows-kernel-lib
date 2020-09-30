@@ -4,9 +4,9 @@
 
 namespace fibo::kernel::Utility
 {
-	KE_NODISCARD size_t minUpper(size_t x, size_t factor) KE_NOEXCEPT
+	KE_NODISCARD size_t aligned(size_t operand, size_t alignment) KE_NOEXCEPT
 	{
-		factor = Algorithm::max(factor, kMinMemoryBlock);
-		return (((x + factor) / factor) * factor);
+		alignment = Algorithm::max(alignment, kMinMemoryBlock);
+		return ((operand + alignment) & ~(alignment - 1));
 	}
 }

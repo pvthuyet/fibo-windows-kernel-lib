@@ -3,5 +3,5 @@
 
 namespace fibo::kernel::Utility
 {
-	KE_NODISCARD size_t minUpper(size_t x, size_t factor = 8) KE_NOEXCEPT;
+	KE_NODISCARD size_t aligned(size_t operand, size_t alignment = 8) KE_NOEXCEPT;
 }
