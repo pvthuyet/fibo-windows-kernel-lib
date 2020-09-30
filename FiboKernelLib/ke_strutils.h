@@ -14,4 +14,6 @@ namespace fibo::kernel::StrUtils
 	bool iequal(const wchar_t* str1, const wchar_t* str2, size_t count);
 
 	bool toLower(wchar_t* str, size_t numberOfElements);
+
+	const wchar_t* substr(const wchar_t* str, const wchar_t* strSearch);
 }

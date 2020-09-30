@@ -51,4 +51,9 @@ namespace fibo::kernel::StrUtils
 	{
 		return 0 == _wcslwr_s(str, numberOfElements);
 	}
+
+	const wchar_t* substr(const wchar_t* str, const wchar_t* strSearch)
+	{
+		return wcsstr(str, strSearch);
+	}
 }

@@ -248,14 +248,52 @@ namespace fibo::kernel
 		return pUnicodeString;
 	}
 
-	size_t KeWstring::find(const wchar_t* s, size_t pos = 0) const
+	bool KeWstring::contain(const wchar_t* sstr, bool icase) const
 	{
-		if (!s || pos >= mLen) {
-			return fibo::kernel::npos;
+		auto sstrLen = StrUtils::length(sstr);
+		if (sstrLen > mLen) {
+			return false;
 		}
 
+		// Case is insensitive
+		if (icase)
+		{
+			// Main string
+			KeWstring lwstr(*this);
+			lwstr.toLower();
 
+			// Search string
+			KeWstring lwsstr(sstr, sstrLen, mPoolType, mTag);
+			lwsstr.toLower();
 
+			return lwstr.contain(lwsstr, false);
+		}
+
+		// Case is sensitive
+		return nullptr != StrUtils::substr(mStr, sstr);
+	}
+
+	bool KeWstring::contain(const KeWstring& sstr, bool icase) const
+	{
+		if (sstr.mLen > mLen) {
+			return false;
+		}
+
+		// Case is insensitive
+		if (icase)
+		{
+			// Main string
+			KeWstring lwstr(*this);
+			lwstr.toLower();
+
+			// Search string
+			KeWstring lwsstr(sstr);
+			lwsstr.toLower();
+			return lwstr.contain(lwsstr, false);
+		}
+
+		// Case is sensitive
+		return nullptr != StrUtils::substr(mStr, sstr.mStr);
 	}
 
 	void KeWstring::release()
