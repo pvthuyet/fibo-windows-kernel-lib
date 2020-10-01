@@ -244,7 +244,8 @@ namespace fibo::kernel
 
 	UNICODE_STRING* KeWstring::getUnicodeString(PUNICODE_STRING pUnicodeString) const
 	{
-		if (mStr) {
+		if (pUnicodeString && mStr)
+		{
 			RtlInitUnicodeString(pUnicodeString, mStr);
 		}
 
