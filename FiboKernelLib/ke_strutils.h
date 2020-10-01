@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ke_define.h"
 #include "ke_constant.h"
 

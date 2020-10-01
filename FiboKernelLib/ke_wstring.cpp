@@ -248,52 +248,64 @@ namespace fibo::kernel
 		return pUnicodeString;
 	}
 
-	bool KeWstring::contain(const wchar_t* sstr, bool icase) const
+	size_t KeWstring::find(const KeWstring& sstr, bool icase) const
 	{
-		auto sstrLen = StrUtils::length(sstr);
-		if (sstrLen > mLen) {
-			return false;
+		if (0 == sstr.mLen) {
+			return npos;
 		}
-
-		// Case is insensitive
-		if (icase)
-		{
-			// Main string
-			KeWstring lwstr(*this);
-			lwstr.toLower();
-
-			// Search string
-			KeWstring lwsstr(sstr, sstrLen, mPoolType, mTag);
-			lwsstr.toLower();
-
-			return lwstr.contain(lwsstr, false);
-		}
-
-		// Case is sensitive
-		return nullptr != StrUtils::substr(mStr, sstr);
+		return find(sstr.mStr, sstr.mLen, icase);
 	}
 
-	bool KeWstring::contain(const KeWstring& sstr, bool icase) const
+	size_t KeWstring::find(PCUNICODE_STRING sstr, bool icase) const
 	{
-		if (sstr.mLen > mLen) {
-			return false;
+		if (!sstr || 0 == sstr->Length) {
+			return npos;
 		}
 
-		// Case is insensitive
+		return find(sstr->Buffer, sstr->Length, icase);
+	}
+
+	size_t KeWstring::find(const wchar_t* sstr, size_t count, bool icase) const
+	{
+		// Valid param
+		if (0 == mLen || !sstr) {
+			return npos;
+		}
+
+		// Valid param
+		count = (0 == count) ? StrUtils::length(sstr) : count;
+		if (0 == count) {
+			return npos;
+		}
+
+		// size of search str greater than main string
+		if (count > mLen) {
+			return npos;
+		}
+
+		auto numCmpElements = mLen - count + 1;
+
+		// Case insensitive
 		if (icase)
 		{
-			// Main string
-			KeWstring lwstr(*this);
-			lwstr.toLower();
-
-			// Search string
-			KeWstring lwsstr(sstr);
-			lwsstr.toLower();
-			return lwstr.contain(lwsstr, false);
+			for (size_t i = 0; i < numCmpElements; ++i)
+			{
+				if (StrUtils::iequal(mStr + i, sstr, count)) {
+					return i;
+				}
+			}
+		}
+		else // Case sensitive
+		{
+			for (size_t i = 0; i < numCmpElements; ++i)
+			{
+				if (StrUtils::equal(mStr + i, sstr, count)) {
+					return i;
+				}
+			}
 		}
 
-		// Case is sensitive
-		return nullptr != StrUtils::substr(mStr, sstr.mStr);
+		return npos;
 	}
 
 	void KeWstring::release()
