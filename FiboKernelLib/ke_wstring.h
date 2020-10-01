@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ke_define.h"
+#include "ke_constant.h"
 
 namespace fibo::kernel
 {
@@ -40,7 +41,7 @@ namespace fibo::kernel
 
 		size_t find(const KeWstring& sstr, bool icase = false) const;
 		size_t find(PCUNICODE_STRING sstr, bool icase = false) const;
-		size_t find(const wchar_t* sstr, size_t count, bool icase = false) const;
+		size_t find(const wchar_t* sstr, size_t count = 0, bool icase = false) const;
 
 	private:
 		KE_NODISCARD wchar_t* allocate(size_t numOfBytes, const wchar_t* src = nullptr, size_t count = 0) const;

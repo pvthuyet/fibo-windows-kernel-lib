@@ -36,14 +36,17 @@ namespace fibo::kernel
 		mCapacity{ 0 },
 		mStr{ nullptr }
 	{
-		mLen = str->Length / sizeof(wchar_t);
-		if (mLen > 0)
+		if (str)
 		{
-			mCapacity = Utility::aligned((mLen + 1) * sizeof(wchar_t));
-			mStr = allocate(mCapacity, str->Buffer, mLen);
-			if (!mStr)
+			mLen = str->Length / sizeof(wchar_t);
+			if (mLen > 0)
 			{
-				ExRaiseStatus(STATUS_NO_MEMORY);
+				mCapacity = Utility::aligned((mLen + 1) * sizeof(wchar_t));
+				mStr = allocate(mCapacity, str->Buffer, mLen);
+				if (!mStr)
+				{
+					ExRaiseStatus(STATUS_NO_MEMORY);
+				}
 			}
 		}
 	}
