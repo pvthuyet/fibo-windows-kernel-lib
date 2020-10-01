@@ -44,7 +44,7 @@ namespace fibo::kernel
 		size_t find(const wchar_t* sstr, size_t count = 0, bool icase = false) const;
 
 	private:
-		KE_NODISCARD wchar_t* allocate(size_t numOfBytes, const wchar_t* src = nullptr, size_t count = 0) const;
+		KE_NODISCARD wchar_t* allocateAndAppend(size_t numOfBytes, const wchar_t* src = nullptr, size_t count = 0) const;
 		void release();
 
 	private:
