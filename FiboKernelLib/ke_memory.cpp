@@ -9,8 +9,6 @@ namespace fibo::kernel::Memory
 			_In_ POOL_TYPE type,
 			_In_ ULONG tag)
 	{
-		PAGED_CODE();
-		
 		if (!str || 0 == numOfBytes) {
 			return STATUS_INVALID_PARAMETER;
 		}
@@ -29,8 +27,6 @@ namespace fibo::kernel::Memory
 	_Use_decl_annotations_
 	VOID freeUnicodeString(_Inout_ PUNICODE_STRING str, _In_ ULONG tag)
 	{
-		PAGED_CODE();
-		
 		if (str)
 		{
 			if (str->Buffer)

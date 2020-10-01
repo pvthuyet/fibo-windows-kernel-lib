@@ -9,6 +9,7 @@ namespace fibo::kernel
 	{
 	public:
 		ScopedUnicodeString();
+		explicit ScopedUnicodeString(POOL_TYPE type, ULONG tag);
 		~ScopedUnicodeString();
 
 		PCUNICODE_STRING get() const;
@@ -19,7 +20,8 @@ namespace fibo::kernel
 		KE_NODISCARD NTSTATUS append(PCWSTR src);
 		KE_NODISCARD NTSTATUS append(PCUNICODE_STRING src);
 
-		KE_NODISCARD NTSTATUS allocate(USHORT numOfBytes, POOL_TYPE type = PagedPool, ULONG tag = 0);
+		KE_NODISCARD NTSTATUS allocate(USHORT numOfBytes);
+		KE_NODISCARD NTSTATUS allocate(USHORT numOfBytes, POOL_TYPE type, ULONG tag = 0);
 		VOID release();
 
 	private:

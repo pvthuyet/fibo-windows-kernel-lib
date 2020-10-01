@@ -6,9 +6,14 @@
 namespace fibo::kernel
 {
 	ScopedUnicodeString::ScopedUnicodeString() :
+		ScopedUnicodeString(PagedPool, 0)
+	{
+	}
+
+	ScopedUnicodeString::ScopedUnicodeString(POOL_TYPE type, ULONG tag) :
 		mUniStr{ 0 },
-		mPoolType{ PagedPool },
-		mTag{ 0 }
+		mPoolType{ type },
+		mTag{ tag }
 	{
 	}
 
@@ -40,6 +45,11 @@ namespace fibo::kernel
 	NTSTATUS ScopedUnicodeString::append(PCUNICODE_STRING src)
 	{
 		return RtlAppendUnicodeStringToString(&mUniStr, src);
+	}
+
+	NTSTATUS ScopedUnicodeString::allocate(USHORT numOfBytes)
+	{
+		return allocate(numOfBytes, mPoolType, mTag);
 	}
 
 	NTSTATUS ScopedUnicodeString::allocate(USHORT numOfBytes, POOL_TYPE type, ULONG tag)
