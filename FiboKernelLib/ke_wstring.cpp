@@ -13,15 +13,15 @@ namespace fibo::kernel
 	KeWstring::KeWstring(const wchar_t* str, size_t count, POOL_TYPE pool, ULONG tag) :
 		mPoolType{ pool },
 		mTag{ tag },
-		mLen{ 0 },
+		mNumberOfElements{ 0 },
 		mCapacity{ 0 },
 		mStr{ nullptr }
 	{
-		mLen = (0 == count) ? StrUtils::length(str) : count;
-		if (mLen > 0)
+		mNumberOfElements = (0 == count) ? StrUtils::length(str) : count;
+		if (mNumberOfElements > 0)
 		{
-			mCapacity = Utility::aligned((mLen + 1) * sizeof(wchar_t));
-			mStr = allocateAndAppend(mCapacity, str, mLen);
+			mCapacity = Utility::aligned((mNumberOfElements + 1) * sizeof(wchar_t));
+			mStr = allocateAndAppend(mCapacity, str, mNumberOfElements);
 			if (!mStr)
 			{
 				ExRaiseStatus(STATUS_NO_MEMORY);
@@ -32,17 +32,17 @@ namespace fibo::kernel
 	KeWstring::KeWstring(PCUNICODE_STRING str, POOL_TYPE pool, ULONG tag) :
 		mPoolType{ pool },
 		mTag{ tag },
-		mLen{ 0 },
+		mNumberOfElements{ 0 },
 		mCapacity{ 0 },
 		mStr{ nullptr }
 	{
 		if (str)
 		{
-			mLen = str->Length / sizeof(wchar_t);
-			if (mLen > 0)
+			mNumberOfElements = str->Length / sizeof(wchar_t);
+			if (mNumberOfElements > 0)
 			{
-				mCapacity = Utility::aligned((mLen + 1) * sizeof(wchar_t));
-				mStr = allocateAndAppend(mCapacity, str->Buffer, mLen);
+				mCapacity = Utility::aligned((mNumberOfElements + 1) * sizeof(wchar_t));
+				mStr = allocateAndAppend(mCapacity, str->Buffer, mNumberOfElements);
 				if (!mStr)
 				{
 					ExRaiseStatus(STATUS_NO_MEMORY);
@@ -54,13 +54,13 @@ namespace fibo::kernel
 	KeWstring::KeWstring(const KeWstring& other) :
 		mPoolType{ other.mPoolType },
 		mTag{ other.mTag },
-		mLen{ other.mLen },
+		mNumberOfElements{ other.mNumberOfElements },
 		mCapacity{ other.mCapacity },
 		mStr{ nullptr }
 	{
-		if (other.mLen > 0)
+		if (other.mNumberOfElements > 0)
 		{
-			mStr = allocateAndAppend(other.mCapacity, other.mStr, other.mLen);
+			mStr = allocateAndAppend(other.mCapacity, other.mStr, other.mNumberOfElements);
 			if (!mStr)
 			{
 				ExRaiseStatus(STATUS_NO_MEMORY);
@@ -71,12 +71,12 @@ namespace fibo::kernel
 	KeWstring::KeWstring(KeWstring&& other) :
 		mPoolType{ other.mPoolType },
 		mTag{ other.mTag },
-		mLen{ other.mLen },
+		mNumberOfElements{ other.mNumberOfElements },
 		mCapacity{ other.mCapacity },
 		mStr{ other.mStr }
 	{
 		// Reset other
-		other.mLen = other.mCapacity = 0;
+		other.mNumberOfElements = other.mCapacity = 0;
 		other.mStr = nullptr;
 	}
 
@@ -92,11 +92,11 @@ namespace fibo::kernel
 			release();
 			this->mPoolType = other.mPoolType;
 			this->mTag = other.mTag;
-			this->mLen = other.mLen;
+			this->mNumberOfElements = other.mNumberOfElements;
 			this->mCapacity = other.mCapacity;
-			if (other.mLen > 0)
+			if (other.mNumberOfElements > 0)
 			{
-				this->mStr = allocateAndAppend(other.mCapacity, other.mStr, other.mLen);
+				this->mStr = allocateAndAppend(other.mCapacity, other.mStr, other.mNumberOfElements);
 				if (!this->mStr)
 				{
 					ExRaiseStatus(STATUS_NO_MEMORY);
@@ -113,11 +113,11 @@ namespace fibo::kernel
 			release();
 			this->mPoolType = other.mPoolType;
 			this->mTag = other.mTag;
-			this->mLen = other.mLen;
+			this->mNumberOfElements = other.mNumberOfElements;
 			this->mCapacity = other.mCapacity;
 			this->mStr = other.mStr;
 			// Reset other
-			other.mCapacity = other.mLen = 0;
+			other.mCapacity = other.mNumberOfElements = 0;
 			other.mStr = nullptr;
 		}
 		return *this;
@@ -125,7 +125,7 @@ namespace fibo::kernel
 
 	KeWstring& KeWstring::operator+=(const KeWstring& other)
 	{
-		return append(other.mStr, other.mLen);
+		return append(other.mStr, other.mNumberOfElements);
 	}
 
 	KeWstring& KeWstring::operator+=(PCWSTR str)
@@ -137,17 +137,17 @@ namespace fibo::kernel
 	{
 		if (this != &other)
 		{
-			if (this->mLen != other.mLen)
+			if (this->mNumberOfElements != other.mNumberOfElements)
 			{
 				return false;
 			}
 
-			if (0 == this->mLen)
+			if (0 == this->mNumberOfElements)
 			{
 				return true;
 			}
 
-			return StrUtils::equal(this->mStr, other.mStr, this->mLen);
+			return StrUtils::equal(this->mStr, other.mStr, this->mNumberOfElements);
 		}
 		return true;
 	}
@@ -174,28 +174,28 @@ namespace fibo::kernel
 
 	size_t KeWstring::length() const
 	{
-		return this->mLen;
+		return this->mNumberOfElements;
 	}
 
 	KE_NODISCARD KeWstring KeWstring::toLower() const
 	{
 		KeWstring tmp(*this);
-		StrUtils::toLower(tmp.mStr, tmp.mLen + 1);
+		StrUtils::toLower(tmp.mStr, tmp.mNumberOfElements + 1);
 		return tmp;
 	}
 
 	KeWstring& KeWstring::toLower()
 	{
-		StrUtils::toLower(mStr, mLen + 1);
+		StrUtils::toLower(mStr, mNumberOfElements + 1);
 		return *this;
 	}
 
 	KeWstring& KeWstring::truncate(size_t length)
 	{
-		if (mLen > length)
+		if (mNumberOfElements > length)
 		{
-			mLen = length;
-			mStr[mLen] = L'\0';
+			mNumberOfElements = length;
+			mStr[mNumberOfElements] = L'\0';
 		}
 		return *this;
 	}
@@ -207,14 +207,14 @@ namespace fibo::kernel
 		{
 			auto newAlloc = false;
 			auto newBuffer = mStr;
-			auto newLen = mLen + count;
+			auto newLen = mNumberOfElements + count;
 			auto newCapacity = mCapacity;
 
 			auto newLenInBytes = (newLen + 1) * sizeof(wchar_t);
 			if (newLenInBytes > mCapacity)
 			{
 				newCapacity = Utility::aligned(newLenInBytes);
-				newBuffer = allocateAndAppend(newCapacity, mStr, mLen);
+				newBuffer = allocateAndAppend(newCapacity, mStr, mNumberOfElements);
 				if (newBuffer) {
 					newAlloc = true;
 				}
@@ -227,7 +227,7 @@ namespace fibo::kernel
 				if (newAlloc)
 				{
 					release();
-					this->mLen = newLen;
+					this->mNumberOfElements = newLen;
 					this->mCapacity = newCapacity;
 					this->mStr = newBuffer;
 				}
@@ -238,13 +238,13 @@ namespace fibo::kernel
 
 	KE_NODISCARD const wchar_t KeWstring::getAt(size_t index) const
 	{
-		NT_ASSERT(mLen > index);
+		NT_ASSERT(mNumberOfElements > index);
 		return mStr[index];
 	}
 
 	wchar_t& KeWstring::getAt(size_t index)
 	{
-		NT_ASSERT(mLen > index);
+		NT_ASSERT(mNumberOfElements > index);
 		return mStr[index];
 	}
 
@@ -260,10 +260,10 @@ namespace fibo::kernel
 
 	size_t KeWstring::find(const KeWstring& sstr, bool icase) const
 	{
-		if (0 == sstr.mLen) {
+		if (0 == sstr.mNumberOfElements) {
 			return npos;
 		}
-		return find(sstr.mStr, sstr.mLen, icase);
+		return find(sstr.mStr, sstr.mNumberOfElements, icase);
 	}
 
 	size_t KeWstring::find(PCUNICODE_STRING sstr, bool icase) const
@@ -278,7 +278,7 @@ namespace fibo::kernel
 	size_t KeWstring::find(const wchar_t* sstr, size_t count, bool icase) const
 	{
 		// Valid param
-		if (0 == mLen || !sstr) {
+		if (0 == mNumberOfElements || !sstr) {
 			return npos;
 		}
 
@@ -289,11 +289,11 @@ namespace fibo::kernel
 		}
 
 		// size of search str greater than main string
-		if (count > mLen) {
+		if (count > mNumberOfElements) {
 			return npos;
 		}
 
-		auto numCmpElements = mLen - count + 1;
+		auto numCmpElements = mNumberOfElements - count + 1;
 
 		// Case insensitive
 		if (icase)
@@ -324,7 +324,7 @@ namespace fibo::kernel
 		{
 			ExFreePoolWithTag(mStr, mTag);
 			mStr = nullptr;
-			mCapacity = mLen = 0;
+			mCapacity = mNumberOfElements = 0;
 		}
 	}
 

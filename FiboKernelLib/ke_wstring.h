@@ -49,8 +49,8 @@ namespace fibo::kernel
 
 	private:
 		wchar_t* mStr{ nullptr };
-		size_t mLen{ 0 };		// Number of element of mStr. Not include null-terminated
-		size_t mCapacity{ 0 };	// size of mStr in bytes
+		size_t mNumberOfElements{ 0 };	// Number of element of mStr. Not include null-terminated
+		size_t mCapacity{ 0 };			// size of mStr in bytes
 		POOL_TYPE mPoolType{ PagedPool };
 		ULONG mTag{ 0 };
 	};
