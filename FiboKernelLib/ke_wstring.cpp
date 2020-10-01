@@ -258,6 +258,21 @@ namespace fibo::kernel
 		return pUnicodeString;
 	}
 
+	bool KeWstring::contain(const KeWstring& sstr, bool icase) const
+	{
+		return npos != find(sstr, icase);
+	}
+
+	bool KeWstring::contain(PCUNICODE_STRING sstr, bool icase) const
+	{
+		return npos != find(sstr, icase);
+	}
+
+	bool KeWstring::contain(const wchar_t* sstr, size_t count, bool icase) const
+	{
+		return npos != find(sstr, count, icase);
+	}
+
 	size_t KeWstring::find(const KeWstring& sstr, bool icase) const
 	{
 		if (0 == sstr.mNumberOfElements) {

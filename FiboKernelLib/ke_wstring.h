@@ -39,6 +39,10 @@ namespace fibo::kernel
 		wchar_t& getAt(size_t index);
 		UNICODE_STRING* getUnicodeString(PUNICODE_STRING) const;
 
+		bool contain(const KeWstring& sstr, bool icase = false) const;
+		bool contain(PCUNICODE_STRING sstr, bool icase = false) const;
+		bool contain(const wchar_t* sstr, size_t count = 0, bool icase = false) const;
+
 		size_t find(const KeWstring& sstr, bool icase = false) const;
 		size_t find(PCUNICODE_STRING sstr, bool icase = false) const;
 		size_t find(const wchar_t* sstr, size_t count = 0, bool icase = false) const;
