@@ -9,9 +9,9 @@ namespace fibo::kernel
 	{
 	public:
 		ScopedUnicodeString();
-		explicit ScopedUnicodeString(PCWCH src, USHORT count, POOL_TYPE type = PagedPool, ULONG tag = 0);
+		explicit ScopedUnicodeString(PCWCH src, size_t count, POOL_TYPE type = PagedPool, ULONG tag = 0);
 		explicit ScopedUnicodeString(PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = 0);
-		explicit ScopedUnicodeString(USHORT numOfAllocBytes, PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = 0);
+		explicit ScopedUnicodeString(size_t numOfAllocBytes, PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = 0);
 		explicit ScopedUnicodeString(POOL_TYPE type, ULONG tag);
 
 		~ScopedUnicodeString();
@@ -29,8 +29,8 @@ namespace fibo::kernel
 		KE_NODISCARD NTSTATUS append(PCWSTR src);
 		KE_NODISCARD NTSTATUS append(PCUNICODE_STRING src);
 
-		KE_NODISCARD NTSTATUS allocate(USHORT numOfBytes);
-		KE_NODISCARD NTSTATUS allocate(USHORT numOfBytes, POOL_TYPE type, ULONG tag = 0);
+		KE_NODISCARD NTSTATUS allocate(size_t numOfBytes);
+		KE_NODISCARD NTSTATUS allocate(size_t numOfBytes, POOL_TYPE type, ULONG tag = 0);
 		VOID release();
 
 	private:

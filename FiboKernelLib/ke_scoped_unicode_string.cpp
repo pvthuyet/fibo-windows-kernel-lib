@@ -10,14 +10,14 @@ namespace fibo::kernel
 	{
 	}
 
-	ScopedUnicodeString::ScopedUnicodeString(PCWCH src, USHORT count, POOL_TYPE type, ULONG tag) :
+	ScopedUnicodeString::ScopedUnicodeString(PCWCH src, size_t count, POOL_TYPE type, ULONG tag) :
 		ScopedUnicodeString(type, tag)
 	{
 		NT_ASSERT(src);
-		auto numOfBytes = (0 == count) ? (StrUtils::lengthInbytes(src, UNICODE_STRING_MAX_BYTES - sizeof(wchar_t)) + sizeof(wchar_t)) : ((count + 1) * sizeof(wchar_t));
+		auto numOfBytes = (0 == count) ? (StrUtils::lengthInbytes(src) + sizeof(wchar_t)) : ((count + 1) * sizeof(wchar_t));
 		if (numOfBytes > 0)
 		{
-			auto status = allocate(static_cast<USHORT>(numOfBytes));
+			auto status = allocate(numOfBytes);
 			if (!NT_SUCCESS(status)) {
 				ExRaiseStatus(STATUS_NO_MEMORY);
 			}
@@ -40,7 +40,7 @@ namespace fibo::kernel
 		RtlCopyUnicodeString(&mUniStr, src);
 	}
 
-	ScopedUnicodeString::ScopedUnicodeString(USHORT numOfAllocBytes, PCUNICODE_STRING src, POOL_TYPE type, ULONG tag) :
+	ScopedUnicodeString::ScopedUnicodeString(size_t numOfAllocBytes, PCUNICODE_STRING src, POOL_TYPE type, ULONG tag) :
 		ScopedUnicodeString(type, tag)
 	{
 		NT_ASSERT(numOfAllocBytes > 0);
@@ -108,17 +108,17 @@ namespace fibo::kernel
 		return RtlAppendUnicodeStringToString(&mUniStr, src);
 	}
 
-	NTSTATUS ScopedUnicodeString::allocate(USHORT numOfBytes)
+	NTSTATUS ScopedUnicodeString::allocate(size_t numOfBytes)
 	{
 		return allocate(numOfBytes, mPoolType, mTag);
 	}
 
-	NTSTATUS ScopedUnicodeString::allocate(USHORT numOfBytes, POOL_TYPE type, ULONG tag)
+	NTSTATUS ScopedUnicodeString::allocate(size_t numOfBytes, POOL_TYPE type, ULONG tag)
 	{
 		Memory::freeUnicodeString(&mUniStr, mTag);
 		mPoolType = type;
 		mTag = tag;
-		return Memory::allocateUnicodeString(&mUniStr, min(numOfBytes, UNICODE_STRING_MAX_BYTES), type, tag);
+		return Memory::allocateUnicodeString(&mUniStr, numOfBytes, type, tag);
 	}
 
 	VOID ScopedUnicodeString::release()

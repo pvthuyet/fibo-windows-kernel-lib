@@ -5,7 +5,7 @@ namespace fibo::kernel::Memory
 {
 	_Use_decl_annotations_
 	NTSTATUS allocateUnicodeString(_Inout_ PUNICODE_STRING str,
-			_In_ USHORT numOfBytes,
+			_In_ size_t numOfBytes,
 			_In_ POOL_TYPE type,
 			_In_ ULONG tag)
 	{
@@ -13,6 +13,7 @@ namespace fibo::kernel::Memory
 			return STATUS_INVALID_PARAMETER;
 		}
 
+		numOfBytes = min(numOfBytes, UNICODE_STRING_MAX_BYTES); // Limit the memory for unicode_string
 		str->Buffer = static_cast<PWCH>(ExAllocatePoolWithTag(type, numOfBytes, tag));
 		if (nullptr == str->Buffer) {
 			return STATUS_INSUFFICIENT_RESOURCES;
@@ -20,7 +21,7 @@ namespace fibo::kernel::Memory
 
 		RtlZeroMemory(str->Buffer, numOfBytes);
 		str->Length = 0;
-		str->MaximumLength = numOfBytes;
+		str->MaximumLength = static_cast<USHORT>(numOfBytes);
 		return STATUS_SUCCESS;
 	}
 
