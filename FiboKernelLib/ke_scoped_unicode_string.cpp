@@ -10,6 +10,28 @@ namespace fibo::kernel
 	{
 	}
 
+	ScopedUnicodeString::ScopedUnicodeString(PCUNICODE_STRING src, POOL_TYPE type, ULONG tag) :
+		ScopedUnicodeString(type, tag)
+	{
+		NT_ASSERT(src);
+		auto status = allocate(src->MaximumLength);
+		if (!NT_SUCCESS(status)) {
+			ExRaiseStatus(STATUS_NO_MEMORY);
+		}
+		RtlCopyUnicodeString(&mUniStr, src);
+	}
+
+	ScopedUnicodeString::ScopedUnicodeString(USHORT numOfAllocBytes, PCUNICODE_STRING src, POOL_TYPE type, ULONG tag) :
+		ScopedUnicodeString(type, tag)
+	{
+		NT_ASSERT(numOfAllocBytes > 0);
+		auto status = allocate(numOfAllocBytes);
+		if (!NT_SUCCESS(status)) {
+			ExRaiseStatus(STATUS_NO_MEMORY);
+		}
+		RtlCopyUnicodeString(&mUniStr, src);
+	}
+
 	ScopedUnicodeString::ScopedUnicodeString(POOL_TYPE type, ULONG tag) :
 		mUniStr{ 0 },
 		mPoolType{ type },
