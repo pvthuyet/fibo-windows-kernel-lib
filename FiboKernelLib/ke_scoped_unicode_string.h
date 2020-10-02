@@ -15,6 +15,8 @@ namespace fibo::kernel
 
 		~ScopedUnicodeString();
 
+		operator bool() const;
+
 		KE_NODISCARD bool valid() const;
 		KE_NODISCARD USHORT length() const;
 

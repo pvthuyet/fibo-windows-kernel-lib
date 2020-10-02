@@ -44,6 +44,11 @@ namespace fibo::kernel
 		release();
 	}
 
+	ScopedUnicodeString::operator bool() const
+	{
+		return valid();
+	}
+
 	bool ScopedUnicodeString::valid() const
 	{
 		return 0 != mUniStr.MaximumLength;
