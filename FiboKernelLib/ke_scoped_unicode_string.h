@@ -9,6 +9,7 @@ namespace fibo::kernel
 	{
 	public:
 		ScopedUnicodeString();
+		explicit ScopedUnicodeString(PCWCH src, USHORT count, POOL_TYPE type = PagedPool, ULONG tag = 0);
 		explicit ScopedUnicodeString(PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = 0);
 		explicit ScopedUnicodeString(USHORT numOfAllocBytes, PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = 0);
 		explicit ScopedUnicodeString(POOL_TYPE type, ULONG tag);
