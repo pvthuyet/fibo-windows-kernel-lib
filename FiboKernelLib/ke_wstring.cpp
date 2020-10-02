@@ -14,14 +14,14 @@ namespace fibo::kernel
 		mPoolType{ pool },
 		mTag{ tag },
 		mNumberOfElements{ 0 },
-		mCapacity{ 0 },
+		mCapacityInBytes{ 0 },
 		mStr{ nullptr }
 	{
 		mNumberOfElements = (0 == count) ? StrUtils::length(str) : count;
 		if (mNumberOfElements > 0)
 		{
-			mCapacity = Utility::aligned((mNumberOfElements + 1) * sizeof(wchar_t));
-			mStr = allocateAndAppend(mCapacity, str, mNumberOfElements);
+			mCapacityInBytes = Utility::aligned((mNumberOfElements + 1) * sizeof(wchar_t));
+			mStr = allocateAndCopy(mCapacityInBytes, str, mNumberOfElements);
 			if (!mStr)
 			{
 				ExRaiseStatus(STATUS_NO_MEMORY);
@@ -33,7 +33,7 @@ namespace fibo::kernel
 		mPoolType{ pool },
 		mTag{ tag },
 		mNumberOfElements{ 0 },
-		mCapacity{ 0 },
+		mCapacityInBytes{ 0 },
 		mStr{ nullptr }
 	{
 		if (str)
@@ -41,8 +41,8 @@ namespace fibo::kernel
 			mNumberOfElements = str->Length / sizeof(wchar_t);
 			if (mNumberOfElements > 0)
 			{
-				mCapacity = Utility::aligned((mNumberOfElements + 1) * sizeof(wchar_t));
-				mStr = allocateAndAppend(mCapacity, str->Buffer, mNumberOfElements);
+				mCapacityInBytes = Utility::aligned((mNumberOfElements + 1) * sizeof(wchar_t));
+				mStr = allocateAndCopy(mCapacityInBytes, str->Buffer, mNumberOfElements);
 				if (!mStr)
 				{
 					ExRaiseStatus(STATUS_NO_MEMORY);
@@ -55,12 +55,12 @@ namespace fibo::kernel
 		mPoolType{ other.mPoolType },
 		mTag{ other.mTag },
 		mNumberOfElements{ other.mNumberOfElements },
-		mCapacity{ other.mCapacity },
+		mCapacityInBytes{ other.mCapacityInBytes },
 		mStr{ nullptr }
 	{
 		if (other.mNumberOfElements > 0)
 		{
-			mStr = allocateAndAppend(other.mCapacity, other.mStr, other.mNumberOfElements);
+			mStr = allocateAndCopy(other.mCapacityInBytes, other.mStr, other.mNumberOfElements);
 			if (!mStr)
 			{
 				ExRaiseStatus(STATUS_NO_MEMORY);
@@ -72,11 +72,11 @@ namespace fibo::kernel
 		mPoolType{ other.mPoolType },
 		mTag{ other.mTag },
 		mNumberOfElements{ other.mNumberOfElements },
-		mCapacity{ other.mCapacity },
+		mCapacityInBytes{ other.mCapacityInBytes },
 		mStr{ other.mStr }
 	{
 		// Reset other
-		other.mNumberOfElements = other.mCapacity = 0;
+		other.mNumberOfElements = other.mCapacityInBytes = 0;
 		other.mStr = nullptr;
 	}
 
@@ -93,10 +93,10 @@ namespace fibo::kernel
 			this->mPoolType = other.mPoolType;
 			this->mTag = other.mTag;
 			this->mNumberOfElements = other.mNumberOfElements;
-			this->mCapacity = other.mCapacity;
+			this->mCapacityInBytes = other.mCapacityInBytes;
 			if (other.mNumberOfElements > 0)
 			{
-				this->mStr = allocateAndAppend(other.mCapacity, other.mStr, other.mNumberOfElements);
+				this->mStr = allocateAndCopy(other.mCapacityInBytes, other.mStr, other.mNumberOfElements);
 				if (!this->mStr)
 				{
 					ExRaiseStatus(STATUS_NO_MEMORY);
@@ -114,10 +114,10 @@ namespace fibo::kernel
 			this->mPoolType = other.mPoolType;
 			this->mTag = other.mTag;
 			this->mNumberOfElements = other.mNumberOfElements;
-			this->mCapacity = other.mCapacity;
+			this->mCapacityInBytes = other.mCapacityInBytes;
 			this->mStr = other.mStr;
 			// Reset other
-			other.mCapacity = other.mNumberOfElements = 0;
+			other.mCapacityInBytes = other.mNumberOfElements = 0;
 			other.mStr = nullptr;
 		}
 		return *this;
@@ -208,13 +208,13 @@ namespace fibo::kernel
 			auto newAlloc = false;
 			auto newBuffer = mStr;
 			auto newLen = mNumberOfElements + count;
-			auto newCapacity = mCapacity;
+			auto newCapacity = mCapacityInBytes;
 
 			auto newLenInBytes = (newLen + 1) * sizeof(wchar_t);
-			if (newLenInBytes > mCapacity)
+			if (newLenInBytes > mCapacityInBytes)
 			{
 				newCapacity = Utility::aligned(newLenInBytes);
-				newBuffer = allocateAndAppend(newCapacity, mStr, mNumberOfElements);
+				newBuffer = allocateAndCopy(newCapacity, mStr, mNumberOfElements);
 				if (newBuffer) {
 					newAlloc = true;
 				}
@@ -228,7 +228,7 @@ namespace fibo::kernel
 				{
 					release();
 					this->mNumberOfElements = newLen;
-					this->mCapacity = newCapacity;
+					this->mCapacityInBytes = newCapacity;
 					this->mStr = newBuffer;
 				}
 			}
@@ -339,11 +339,11 @@ namespace fibo::kernel
 		{
 			ExFreePoolWithTag(mStr, mTag);
 			mStr = nullptr;
-			mCapacity = mNumberOfElements = 0;
+			mCapacityInBytes = mNumberOfElements = 0;
 		}
 	}
 
-	KE_NODISCARD wchar_t* KeWstring::allocateAndAppend(size_t numOfBytes, const wchar_t* src, size_t count) const
+	KE_NODISCARD wchar_t* KeWstring::allocateAndCopy(size_t numOfBytes, const wchar_t* src, size_t count) const
 	{
 		auto newStr = static_cast<wchar_t*>(ExAllocatePoolWithTag(mPoolType, numOfBytes, mTag));
 		if (!newStr) {

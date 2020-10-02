@@ -22,6 +22,16 @@ namespace fibo::kernel
 		release();
 	}
 
+	bool ScopedUnicodeString::valid() const
+	{
+		return 0 != mUniStr.MaximumLength;
+	}
+
+	USHORT ScopedUnicodeString::length() const
+	{
+		return mUniStr.Length / sizeof(wchar_t);
+	}
+
 	PCUNICODE_STRING ScopedUnicodeString::get() const
 	{
 		return &mUniStr;
@@ -32,9 +42,14 @@ namespace fibo::kernel
 		return &mUniStr;
 	}
 
-	VOID ScopedUnicodeString::copy(PCUNICODE_STRING src)
+	NTSTATUS ScopedUnicodeString::copy(PCUNICODE_STRING src)
 	{
-		return RtlCopyUnicodeString(&mUniStr, src);
+		if (!valid()) {
+			return STATUS_MEMORY_NOT_ALLOCATED;
+		}
+		RtlCopyUnicodeString(&mUniStr, src);
+
+		return STATUS_SUCCESS;
 	}
 
 	NTSTATUS ScopedUnicodeString::append(PCWSTR src)

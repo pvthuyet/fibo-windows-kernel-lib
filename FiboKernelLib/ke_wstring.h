@@ -76,13 +76,13 @@ namespace fibo::kernel
 		size_t find(const wchar_t* sstr, size_t count = 0, bool icase = false) const;
 
 	private:
-		KE_NODISCARD wchar_t* allocateAndAppend(size_t numOfBytes, const wchar_t* src = nullptr, size_t count = 0) const;
+		KE_NODISCARD wchar_t* allocateAndCopy(size_t numOfBytes, const wchar_t* src = nullptr, size_t count = 0) const;
 		void release();
 
 	private:
 		wchar_t* mStr{ nullptr };
-		size_t mNumberOfElements{ 0 };	// Number of element of mStr. Not include null-terminated
-		size_t mCapacity{ 0 };			// size of mStr in bytes
+		size_t mNumberOfElements{ 0 };		// Number of element of wchar_t in mStr. Not include null-terminated
+		size_t mCapacityInBytes{ 0 };		// size of mStr in bytes
 		POOL_TYPE mPoolType{ PagedPool };
 		ULONG mTag{ 0 };
 	};
