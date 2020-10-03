@@ -9,10 +9,10 @@ namespace fibo::kernel
 	{
 	public:
 		ScopedUnicodeString();
-		explicit ScopedUnicodeString(PCWCH src, size_t count, POOL_TYPE type = PagedPool, ULONG tag = 0);
-		explicit ScopedUnicodeString(PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = 0);
-		explicit ScopedUnicodeString(size_t numOfAllocBytes, PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = 0);
-		explicit ScopedUnicodeString(POOL_TYPE type, ULONG tag);
+		explicit ScopedUnicodeString(PCWCH src, size_t count, POOL_TYPE type = PagedPool, ULONG tag = KE_DRIVER_TAG_DEFAULT);
+		explicit ScopedUnicodeString(PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = KE_DRIVER_TAG_DEFAULT);
+		explicit ScopedUnicodeString(size_t numOfAllocBytes, PCUNICODE_STRING src, POOL_TYPE type = PagedPool, ULONG tag = KE_DRIVER_TAG_DEFAULT);
+		explicit ScopedUnicodeString(POOL_TYPE type, ULONG tag = KE_DRIVER_TAG_DEFAULT);
 
 		~ScopedUnicodeString();
 

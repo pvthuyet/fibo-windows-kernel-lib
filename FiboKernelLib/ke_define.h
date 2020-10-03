@@ -30,3 +30,5 @@
 
 #define KE_NODISCARD	[[nodiscard]]
 #define KE_NOEXCEPT		noexcept
+
+#define KE_DRIVER_TAG_DEFAULT	'fIbO'
